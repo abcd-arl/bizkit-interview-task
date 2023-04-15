@@ -25,6 +25,21 @@ def search_users(args):
         a list of users that match the search parameters
     """
 
-    # Implement search here!
+    if not args: return USERS
 
-    return USERS
+    group = {}
+    for parameter in args.keys():
+        group[parameter] = []
+
+    for user in USERS:
+        parameter = None
+        if "id" in args and args["id"] == user["id"]: parameter = "id"
+        elif "name" in args and args["name"].lower() in user["name"].lower(): parameter = "name"
+        elif "age" in args and int(args["age"]) >= user["age"]-1 and int(args["age"]) <= user["age"]+1: parameter = "age"
+        elif "occupation" in args and args["occupation"].lower() in user["occupation"].lower(): parameter = "occupation"
+
+        if parameter is not None:
+            group[parameter].append(user)
+
+
+    return [user for group in group.values() for user in group]
